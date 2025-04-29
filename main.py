@@ -13,6 +13,8 @@ load_dotenv()
 with open('config.json') as f:
     config = json.load(f)
 
+os.makedirs('logs', exist_ok=True)
+
 logging.basicConfig(
     filename='logs/bot.log',
     level=logging.INFO,
