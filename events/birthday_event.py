@@ -9,13 +9,13 @@ class BirthdayEvent(commands.Cog):
         self.bot = bot
         self.check_birthdays.start()
 
-    @tasks.loop(hours=24)
+    @tasks.loop(minutes=1)  # Revisa cada minuto en lugar de cada 24 horas
     async def check_birthdays(self):
         await self.bot.wait_until_ready()
 
-        # Hora de Perú (UTC-5), ajustamos el tiempo para asegurarnos de que corra a las 6:00 AM
+        # Hora de Perú (UTC-5)
         now = datetime.utcnow() - timedelta(hours=5)
-        if now.hour != 9:  # Sólo se ejecuta a las 6:00 AM
+        if not (now.hour == 9 and now.minute == 30):  # Ejecuta solo a las 9:30 AM hora Perú
             return
 
         today = now.strftime("%m-%d")
@@ -77,7 +77,7 @@ class BirthdayEvent(commands.Cog):
             )
             await channel.send(special_message)
         else:  # Mensaje estándar
-            message__a = ("@everyone")
+            message__a = "@everyone"
             await channel.send(message__a)
             embed = discord.Embed(
                 description=f"🎂 ¡Feliz cumpleaños {user.mention}! 🎉\n"
@@ -88,10 +88,10 @@ class BirthdayEvent(commands.Cog):
 
     @check_birthdays.before_loop
     async def before_check_birthdays(self):
-        # Calcular tiempo hasta las 6:00 AM hora de Perú
+        # Calcular el tiempo hasta las 9:30 AM hora de Perú (UTC-5)
         now = datetime.utcnow() - timedelta(hours=5)
-        next_run = now.replace(hour=6, minute=0, second=0, microsecond=0)
-        if now.hour >= 6:
+        next_run = now.replace(hour=9, minute=30, second=0, microsecond=0)
+        if now >= next_run:
             next_run += timedelta(days=1)
         wait_time = (next_run - now).total_seconds()
         print(f"Esperando {wait_time} segundos para iniciar el chequeo de cumpleaños.")
