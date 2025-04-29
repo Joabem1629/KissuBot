@@ -15,7 +15,7 @@ class BirthdayEvent(commands.Cog):
 
         # Hora de Perú (UTC-5), ajustamos el tiempo para asegurarnos de que corra a las 6:00 AM
         now = datetime.utcnow() - timedelta(hours=5)
-        if now.hour != 6:  # Sólo se ejecuta a las 6:00 AM
+        if now.hour != 9:  # Sólo se ejecuta a las 6:00 AM
             return
 
         today = now.strftime("%m-%d")
