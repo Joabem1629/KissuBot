@@ -42,11 +42,12 @@ class OnMessage(commands.Cog):
         "!pixel" : ("https://imgur.com/0H3AVAx", "pixel"),
         "!pollo" : ("https://imgur.com/BLgaA8d", "pollo"),
         "!paja" : ("https://imgur.com/ifcBpge", "paja"),
+        "!cum" : ("https://imgur.com/4ssJ1tV", "cum"),
+        "!react" : ("https://imgur.com/4ssJ1tV", "react"),
         "!only" : ("☆ **[onlyfans.com/MomoiroKissu](https://onlyfanskissuvt.github.io/)** ☆", "only"),
         "!redes" : ("# ✿ TODAS LAS REDES AQUI ABAJO ✿\n# o .｡.:*☆*: .｡. o(   **[Carrd](https://momoirokiss.carrd.co/)**   )o .｡.:*☆*: .｡. o\n# o .｡.:*☆*: .｡. o(  **[Twitter](https://twitter.com/KissuVt)**  )o .｡.:*☆*: .｡. o\n# o .｡.:*☆*: .｡. o( **[Instagram](https://www.instagram.com/kissu_vt)** )o .｡.:*☆*: .｡. o\n# o .｡.:*☆*: .｡. o(  **[Facebook](https://www.facebook.com/kissvt)** )o .｡.:*☆*: .｡. o\n# o .｡.:*☆*: .｡. o(   **[Twitch](https://www.twitch.tv/kissuvt)**  )o .｡.:*☆*: .｡. o\n# o .｡.:*☆*: .｡. o(   **[TikTok](https://www.tiktok.com/@kissuvt)**  )o .｡.:*☆*: .｡. o\n# o .｡.:*☆*: .｡. o(  **[Patreon](https://www.patreon.com/momoirokiss)**  )o .｡.:*☆*: .｡. o\n# o .｡.:*☆*: .｡. o( **[Ko-fi](https://www.ko-fi.com/kissuvt)** )o .｡.:*☆*: .｡. o\n# o .｡.:*☆*: .｡. o( **[OnlyFans](https://onlyfanskissuvt.github.io/)**  )o .｡.:*☆*: .｡. o", "redes"),
         "support" : ("\nkissu abrio una meta de donaciones para los que puedan y quiernan, la apoyen.\nDona de manera resposalbe y no te quedes sin comer, por favor.\n# ☆ **[Donaciones](https://ko-fi.com/kissuvt/goal?g=27)** ☆\n", "support"),
         "ko-fi" : ("# ☆ **[Donaciones](https://ko-fi.com/kissuvt/goal?g=27)** ☆", "ko-fi"),
-        "bikini" : ("# ☆ **[Donaciones](https://ko-fi.com/kissuvt/goal?g=27)** ☆", "bikini"),
         }
 
         content = message.content.lower()
