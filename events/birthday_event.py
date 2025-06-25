@@ -15,7 +15,7 @@ class BirthdayEvent(commands.Cog):
 
         # Hora de Perú (UTC-5)
         now = datetime.utcnow() - timedelta(hours=5)
-        if not (now.hour == 9 and now.minute == 30):  # Ejecuta solo a las 9:30 AM hora Perú
+        if not (now.hour == 7 and now.minute == 30):  # Ejecuta solo a las 9:30 AM hora Perú
             return
 
         today = now.strftime("%m-%d")
@@ -90,7 +90,7 @@ class BirthdayEvent(commands.Cog):
     async def before_check_birthdays(self):
         # Calcular el tiempo hasta las 9:30 AM hora de Perú (UTC-5)
         now = datetime.utcnow() - timedelta(hours=5)
-        next_run = now.replace(hour=9, minute=30, second=0, microsecond=0)
+        next_run = now.replace(hour=7, minute=30, second=0, microsecond=0)
         if now >= next_run:
             next_run += timedelta(days=1)
         wait_time = (next_run - now).total_seconds()

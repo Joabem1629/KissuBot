@@ -1,8 +1,73 @@
 import discord
 from discord.ext import commands
+from discord.ui import View, Button
 import json
 import os
-from datetime import datetime, timedelta
+from datetime import datetime
+
+class PaginadorCumpleaños(View):
+    def __init__(self, datos, ctx, por_pagina=8):
+        super().__init__(timeout=60)  # 1 minuto para que expiren los botones
+        self.ctx = ctx
+        self.datos = datos
+        self.por_pagina = por_pagina
+        self.pagina_actual = 0
+        self.total_paginas = (len(datos) - 1) // por_pagina + 1
+        self.embed = None
+
+        self.anterior = Button(emoji="⬅️", style=discord.ButtonStyle.primary)
+        self.siguiente = Button(emoji="➡️", style=discord.ButtonStyle.primary)
+
+        self.anterior.callback = self.atras
+        self.siguiente.callback = self.adelante
+
+        self.add_item(self.anterior)
+        self.add_item(self.siguiente)
+
+    async def atras(self, interaction: discord.Interaction):
+        if interaction.user != self.ctx.author:
+            return await interaction.response.send_message("❌ Solo el autor del comando puede usar los botones.", ephemeral=True)
+
+        self.pagina_actual = (self.pagina_actual - 1) % self.total_paginas
+
+        await interaction.response.edit_message(embed=self.generar_embed(), view=self)
+
+    async def adelante(self, interaction: discord.Interaction):
+        if interaction.user != self.ctx.author:
+            return await interaction.response.send_message("❌ Solo el autor del comando puede usar los botones.", ephemeral=True)
+
+        self.pagina_actual = (self.pagina_actual + 1) % self.total_paginas
+
+        await interaction.response.edit_message(embed=self.generar_embed(), view=self)
+
+    def generar_embed(self):
+        inicio = self.pagina_actual * self.por_pagina
+        fin = inicio + self.por_pagina
+        hoy = datetime.now()
+
+        embed = discord.Embed(
+            title="🎉 Lista de Cumpleaños 🎉",
+            description=f"Página {self.pagina_actual + 1} de {self.total_paginas}",
+            color=0x3498db,
+            timestamp=hoy
+        )
+        embed.set_footer(text=f"Solicitado por {self.ctx.author.name}", icon_url=self.ctx.author.avatar.url)
+
+        meses = [
+            "Enero", "Febrero", "Marzo", "Abril", "Mayo", "Junio", 
+            "Julio", "Agosto", "Septiembre", "Octubre", "Noviembre", "Diciembre"
+        ]
+
+        for days_until, nombre, mes, dia in self.datos[inicio:fin]:
+            mes_nombre = meses[mes - 1]
+            embed.add_field(
+                name=f"👤 {nombre}",
+                value=f"{dia} de {mes_nombre} ({days_until} días restantes)",
+                inline=False
+            )
+
+        return embed
+
 
 class ShowBirthday(commands.Cog):
     def __init__(self, bot):
@@ -11,69 +76,37 @@ class ShowBirthday(commands.Cog):
 
     @commands.command(name="show_birthday", help="Muestra los cumpleaños registrados, ordenados de más cercano a más lejano.")
     async def show_birthday(self, ctx):
-        # Verificar si el archivo existe
         if not os.path.exists(self.file_path):
-            await ctx.send(f"⚠️ El archivo no se encuentra en la ruta: {os.path.abspath(self.file_path)}.")
+            await ctx.send(f"⚠️ El archivo no se encuentra en: `{os.path.abspath(self.file_path)}`.")
             return
 
-        # Leer el archivo de cumpleaños
         with open(self.file_path, "r") as f:
             birthdays = json.load(f)
 
-        # Filtrar por el servidor actual
         guild_id = ctx.guild.id
-        filtered_birthdays = {
+        filtered = {
             user_id: data for user_id, data in birthdays.items() if data.get("guild_id") == guild_id
         }
 
-        if not filtered_birthdays:
+        if not filtered:
             await ctx.send("⚠️ No hay cumpleaños registrados para este servidor.")
             return
 
-        # Obtener la fecha actual
         today = datetime.now()
+        upcoming = []
 
-        # Crear una lista de cumpleaños con cálculo de días restantes
-        upcoming_birthdays = []
-        for user_id, data in filtered_birthdays.items():
+        for user_id, data in filtered.items():
             nombre = data["name"]
-            mes, dia = map(int, data["date"].split("-"))  # Convertir mes y día a enteros
-            birthday_this_year = datetime(year=today.year, month=mes, day=dia)
+            mes, dia = map(int, data["date"].split("-"))
+            cumple = datetime(year=today.year, month=mes, day=dia)
 
-            # Si el cumpleaños ya pasó este año, calcular para el próximo año
-            if birthday_this_year < today:
-                birthday_this_year = datetime(year=today.year + 1, month=mes, day=dia)
+            if cumple < today:
+                cumple = datetime(year=today.year + 1, month=mes, day=dia)
 
-            # Calcular días restantes y agregar a la lista
-            days_until = (birthday_this_year - today).days
-            upcoming_birthdays.append((days_until, nombre, mes, dia))
+            dias_restantes = (cumple - today).days
+            upcoming.append((dias_restantes, nombre, mes, dia))
 
-        # Ordenar los cumpleaños por días restantes
-        upcoming_birthdays.sort(key=lambda x: x[0])
+        upcoming.sort(key=lambda x: x[0])
 
-        # Crear un embed con los cumpleaños ordenados
-        embed = discord.Embed(
-            title="🎉 Lista de Cumpleaños 🎉",
-            description="Cumpleaños ordenados desde el más cercano al más lejano:",
-            color=0x3498db,
-            timestamp=today
-        )
-        embed.set_footer(text="Comando solicitado por {}".format(ctx.author.name), icon_url=ctx.author.avatar.url)
-
-        # Mapeo de números de mes a nombres
-        meses = [
-            "Enero", "Febrero", "Marzo", "Abril", "Mayo", "Junio", 
-            "Julio", "Agosto", "Septiembre", "Octubre", "Noviembre", "Diciembre"
-        ]
-
-        # Agregar los cumpleaños al embed
-        for days_until, nombre, mes, dia in upcoming_birthdays:
-            mes_nombre = meses[mes - 1]
-            embed.add_field(
-                name=f"Usuario: {nombre}",
-                value=f"{dia} - {mes_nombre} ({days_until} días restantes)",
-                inline=False
-            )
-
-        # Enviar el embed en el canal donde se ejecutó el comando
-        await ctx.send(embed=embed)
+        view = PaginadorCumpleaños(upcoming, ctx)
+        await ctx.send(embed=view.generar_embed(), view=view)
