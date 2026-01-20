@@ -1,2 +1,27 @@
+# --- SECRETOS Y CONFIGURACIÓN ---
+.env
+*.log
+config.json
+birthday_channel.json
+token.txt
+# Ignorar cualquier archivo que contenga credenciales
+credentials/
+secrets/
+
+# --- PYTHON (Archivos temporales) ---
 __pycache__/
-*.pyc
+*.py[cod]
+*$py.class
+.pytest_cache/
+.venv
+venv/
+ENV/
+env/
+
+# --- SISTEMA ---
+.DS_Store
+Thumbs.db
+
+# --- ARCHIVOS DE EJEMPLO (Opcional: Asegurar que NO se ignoren) ---
+!*.example
+!example.json
