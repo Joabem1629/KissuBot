@@ -9,13 +9,13 @@ class BirthdayEvent(commands.Cog):
         self.bot = bot
         self.check_birthdays.start()
 
-    @tasks.loop(minutes=1)  # Revisa cada minuto en lugar de cada 24 horas
+    @tasks.loop(minutes=1)  # Revisa cada minuto en lugar de cada 24 horas, se puede cambiar a gusto
     async def check_birthdays(self):
         await self.bot.wait_until_ready()
 
         # Hora de Perú (UTC-5)
-        now = datetime.utcnow() - timedelta(hours=5)
-        if not (now.hour == 7 and now.minute == 30):  # Ejecuta solo a las 9:30 AM hora Perú
+        now = datetime.now() - timedelta(hours=5)
+        if not (now.hour == 7 and now.minute == 30):  # Ejecuta solo a las 9:30 AM hora Perú, me manejo con hora Perú
             return
 
         today = now.strftime("%m-%d")
@@ -67,13 +67,10 @@ class BirthdayEvent(commands.Cog):
                 print(f"Usuario con ID {user_id} no encontrado.")
                 return
 
-        if user_id == "1083182072216178768":  # Mensaje especial
+        if user_id == "":  # Mensaje especial
             special_message = (
-                "@everyone\n\n"
-                f"Hoy es el cumpleaños de la Diosa de este servidor, la razón por la que está hecho este server, "
-                f"este bot, por la cual estamos reunidos hoy, {user.mention}. "
-                "Kiss.\n\n"
-                "¡Feliz Cumpleaños de parte mía, del bot, y de todo el servidor! ¡Que pases un hermoso día! :kissumanca:"
+                "@everyone\n\n" # Aqui pones un mensaje para algun usuario especial si es que llega a haber alguno
+                
             )
             await channel.send(special_message)
         else:  # Mensaje estándar
@@ -88,8 +85,8 @@ class BirthdayEvent(commands.Cog):
 
     @check_birthdays.before_loop
     async def before_check_birthdays(self):
-        # Calcular el tiempo hasta las 9:30 AM hora de Perú (UTC-5)
-        now = datetime.utcnow() - timedelta(hours=5)
+        # Calcular el tiempo hasta las 9:30 AM hora de Perú (UTC-5), porque me manejo con hora Perú
+        now = datetime.now() - timedelta(hours=5)
         next_run = now.replace(hour=7, minute=30, second=0, microsecond=0)
         if now >= next_run:
             next_run += timedelta(days=1)

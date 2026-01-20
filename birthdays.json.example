@@ -1,0 +1,7 @@
+{
+    "ID_DEL_USUARIO": {
+        "name": "NombreDeUsuario",
+        "date": "DD-MM",
+        "guild_id": 0
+    }
+}

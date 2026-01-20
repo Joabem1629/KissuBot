@@ -1,6 +1,6 @@
 {
-    "prefix": "k!",
-    "owner_id": 610956498998394880,
+    "prefix": "$",
+    "owner_id": 0,
     "log_level": "INFO",
     "default_embed_color": "#c51856"
 }
