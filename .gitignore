@@ -1,0 +1,23 @@
+# Entorno virtual
+deploykis/
+.venv/
+venv/
+
+# Python
+__pycache__/
+*.py[cod]
+
+# Logs
+logs/
+*.log
+bot.log
+
+# Secretos
+.env
+.env.*
+!.env.example
+
+# Datos
+config.json
+birthdays.json
+birthday_channel.json
