@@ -1,4 +1,4 @@
-# Entorno virtual
+# Entornos virtuales
 deploykis/
 .venv/
 venv/
@@ -17,7 +17,7 @@ bot.log
 .env.*
 !.env.example
 
-# Datos
+# Configuración y datos de producción
 config.json
 birthdays.json
 birthday_channel.json
