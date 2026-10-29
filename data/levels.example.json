@@ -1,0 +1,37 @@
+{
+ "guilds": {
+  "1159179043103576084": {
+   "config": {
+    "xp_min": 15,
+    "xp_max": 25,
+    "cooldown": 60,
+    "multiplier": 1.0,
+    "coins_per_level": 50,
+    "daily": 100,
+    "drop_chance": 2.0,
+    "drop_min": 20,
+    "drop_max": 80,
+    "stack_roles": false,
+    "levelup_channel": null,
+    "mod_role": null,
+    "ignored_channels": [],
+    "ignored_roles": [],
+    "level_roles": {},
+    "tier_bgs": {},
+    "accent": 5793266
+   },
+   "users": {
+    "610956498998394880": {
+     "xp": 66,
+     "messages": 3,
+     "coins": 0,
+     "medals": [],
+     "pending": [],
+     "bg": null,
+     "last_daily": 0
+    }
+   },
+   "medals": {}
+  }
+ }
+}
