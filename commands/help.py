@@ -9,7 +9,7 @@ class HelpCommand(commands.Cog):
     @commands.command()
     async def help(self, ctx):
         p = ctx.clean_prefix
-        owner = f"<@{self.bot.owner_id}>" if self.bot.owner_id else "el creador del bot"
+        owner = f"<@{self.bot.owner_id}>" if self.bot.owner_id else "Joabem1629"
 
         # Las respuestas rápidas se leen de custom_replies.json (las carga el cog OnMessage)
         on_message = self.bot.get_cog("OnMessage")
