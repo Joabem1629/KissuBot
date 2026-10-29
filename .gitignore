@@ -20,5 +20,5 @@ bot.log
 # Configuración y datos de producción
 config.json
 birthdays.json
-data/levels.json
+levels.json
 birthday_channel.json
