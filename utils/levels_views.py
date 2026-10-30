@@ -100,7 +100,7 @@ class PaginadorRanking(View):
         lineas = []
         for i, (uid, xp) in enumerate(self.filas[inicio:inicio + self.por_pagina], inicio + 1):
             m = self.ctx.guild.get_member(uid)
-            nombre = m.display_name if m else f"Usuario {uid}"
+            nombre = m.display_name if m else f"Usuario <@{uid}>"
             lineas.append(f"`#{i}` **{nombre}** — nivel {level_from_xp(xp)[0]} · {xp:,} XP")
 
         embed = discord.Embed(
